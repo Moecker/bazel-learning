@@ -13,12 +13,6 @@ _cpp_extensions = [
     "cxx",
 ]
 
-_enabled_checks = [
-    "*",
-    "cppcoreguidelines-*",
-    "readability-*",
-]
-
 def _is_cpp_target(srcs):
     for src in srcs:
         for extension in _cpp_extensions:
@@ -82,13 +76,8 @@ def _invoke_clang_tidy(target, ctx):
     args = ctx.actions.args()
     args.add(ctx.executable._clang_tidy)
     args.add(analysis_results)
-    args.add_joined(
-        "-checks",
-        _enabled_checks,
-        join_with = ",",
-        omit_if_empty = True,
-    )
     args.add("-header-filter=.*")
+    args.add("-checks=*")
 
     args.add_all(srcs)
     args.add("--")
@@ -96,7 +85,7 @@ def _invoke_clang_tidy(target, ctx):
 
     visible_headers = target[CcInfo].compilation_context.headers.to_list()
     ctx.actions.run(
-        inputs = srcs + visible_headers,
+        inputs = srcs + visible_headers + [ctx.file._clang_tidy_config],
         executable = ctx.executable._command_wrapper,
         tools = [ctx.executable._clang_tidy],
         outputs = [analysis_results],
@@ -104,7 +93,6 @@ def _invoke_clang_tidy(target, ctx):
         progress_message = "Running clang-tidy on " + ", ".join([src.short_path for src in srcs]),
         mnemonic = "ClangTidy",
     )
-    print("Ran clang-tidy on: {}".format(target))
     return [analysis_results]
 
 def _clang_tidy_aspect_impl(target, ctx):
@@ -139,6 +127,10 @@ clang_tidy_aspect = aspect(
             default = Label("//static_analysis:command_wrapper"),
             executable = True,
             cfg = "host",
+        ),
+        "_clang_tidy_config": attr.label(
+            default = Label("//static_analysis:clang_config"),
+            allow_single_file=True,
         ),
     },
     fragments = ["cpp"],

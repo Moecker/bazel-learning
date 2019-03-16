@@ -5,6 +5,7 @@ class Source2
 {
 public:
     Source2();
+    void wrong_naming();
 };
 
 #endif /* SOURCE2_H */

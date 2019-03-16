@@ -8,3 +8,9 @@ new_local_repository(
     path = "/usr/lib/llvm-6.0/bin",
     build_file = "third_party/BUILD.clang",
 )
+
+new_local_repository(
+    name = "clang_config",
+    path = "static_analysis",
+    build_file = "static_analysis/BUILD.clang_config",
+)
