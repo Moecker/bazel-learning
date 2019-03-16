@@ -11,6 +11,7 @@ _cpp_extensions = [
     "cc",
     "cpp",
     "cxx",
+    ".clang-tidy"
 ]
 
 def _is_cpp_target(srcs):
@@ -78,6 +79,7 @@ def _invoke_clang_tidy(target, ctx):
     args.add(analysis_results)
     args.add("-header-filter=.*")
     args.add("-checks=*")
+    args.add("-format-style=file")
 
     args.add_all(srcs)
     args.add("--")
