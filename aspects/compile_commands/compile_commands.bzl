@@ -129,6 +129,11 @@ def _compilation_database_aspect_impl(target, ctx):
                      target.cc.compile_flags +
                      (ctx.rule.attr.copts if "copts" in dir(ctx.rule.attr) else []))
 
+    # unknown by clang
+    compile_flags.remove("-fno-canonical-system-headers")
+    compile_flags.remove("-Wno-free-nonheap-object")
+    compile_flags.remove("-Wunused-but-set-parameter")
+
     # system built-in directories (helpful for macOS).
     if cc_toolchain.libc == "macosx":
         compile_flags += [

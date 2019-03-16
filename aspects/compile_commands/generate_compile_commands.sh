@@ -23,7 +23,7 @@
 set -e
 
 readonly ASPECTS_DIR="$(dirname "$0")"
-readonly ASPECTS_FILE="${ASPECTS_DIR/#.\/}/aspects.bzl"
+readonly ASPECTS_FILE="compile_commands/compile_commands.bzl"
 readonly OUTPUT_GROUPS="compdb_files"
 
 readonly WORKSPACE="$(bazel info workspace)"
