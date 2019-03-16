@@ -1,3 +1,10 @@
-load("//third_party:dependencies.bzl", "load_dependencies")
+# This is the option where clang tidy is downloaded
+# load("//third_party:dependencies.bzl", "load_dependencies")
+# load_dependencies()
 
-load_dependencies()
+# This is the option where clang tidy is taken from local filesystem
+new_local_repository(
+    name = "clang_local",
+    path = "/usr/lib/llvm-6.0/bin",
+    build_file = "third_party/BUILD.clang",
+)

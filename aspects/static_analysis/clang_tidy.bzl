@@ -131,7 +131,7 @@ clang_tidy_aspect = aspect(
             default = Label("@bazel_tools//tools/cpp:current_cc_toolchain"),
         ),
         "_clang_tidy": attr.label(
-            default = Label("@clang//:clang_tidy"),
+            default = Label("@clang_local//:clang_tidy"),
             executable = True,
             cfg = "host",
         ),
