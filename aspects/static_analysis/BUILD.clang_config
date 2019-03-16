@@ -1,4 +1,0 @@
-filegroup(
-    name = "clang_config_file",
-    srcs = [".clang-tidy"],
-)

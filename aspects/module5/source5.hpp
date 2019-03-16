@@ -7,4 +7,6 @@ public:
     Source5();
 };
 
+void blabla() {}
+
 #endif /* SOURCE5_H */

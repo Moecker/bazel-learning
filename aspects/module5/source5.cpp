@@ -10,5 +10,5 @@ class bla
 
 void foo()
 {
-  int b;
+  int b, c;
 }
