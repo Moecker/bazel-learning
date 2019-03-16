@@ -2,4 +2,4 @@
 
 Source2::Source2() = default;
 
-void Source2::wrong_naming() {}
+void Source2::WrongNaming() {}
