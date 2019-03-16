@@ -2,6 +2,9 @@
 
 Inspired by (grailbio/bazel-compilation-database)[https://github.com/grailbio/bazel-compilation-database]
 
+Note: In order to configure clang-tidy, once must place the .clang-tidy file in the users home directory.
+This is due to the fact that bazel heavily uses symbolic links and traverses the source tree up until it sees a .clang-tidy file.
+
 To run the analysis on a specific target
 ```bash
 bazel build //module1/... --aspects static_analysis/clang_tidy.bzl%clang_tidy_aspect --output_groups=ctidy
