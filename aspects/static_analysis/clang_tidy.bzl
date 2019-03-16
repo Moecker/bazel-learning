@@ -1,11 +1,11 @@
-ClangTidyAspect = provider()
-
 load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
 load(
     "@bazel_tools//tools/build_defs/cc:action_names.bzl",
     "CPP_COMPILE_ACTION_NAME",
     "C_COMPILE_ACTION_NAME",
 )
+
+ClangTidyAspect = provider()
 
 _cpp_extensions = [
     "cc",
@@ -16,6 +16,7 @@ _cpp_extensions = [
 _enabled_checks = [
     "*",
     "cppcoreguidelines-*",
+    "readability-*",
 ]
 
 def _is_cpp_target(srcs):
@@ -66,6 +67,8 @@ def _get_compile_flags(ctx, target, srcs):
 
     # unknown by clang
     compile_flags.remove("-fno-canonical-system-headers")
+    compile_flags.remove("-Wno-free-nonheap-object")
+    compile_flags.remove("-Wunused-but-set-parameter")
 
     return compile_flags
 
@@ -85,6 +88,8 @@ def _invoke_clang_tidy(target, ctx):
         join_with = ",",
         omit_if_empty = True,
     )
+    args.add("-header-filter=.*")
+
     args.add_all(srcs)
     args.add("--")
     args.add_all(_get_compile_flags(ctx, target, srcs))
@@ -99,6 +104,7 @@ def _invoke_clang_tidy(target, ctx):
         progress_message = "Running clang-tidy on " + ", ".join([src.short_path for src in srcs]),
         mnemonic = "ClangTidy",
     )
+    print("Ran clang-tidy on: {}".format(target))
     return [analysis_results]
 
 def _clang_tidy_aspect_impl(target, ctx):
@@ -115,7 +121,8 @@ def _clang_tidy_aspect_impl(target, ctx):
         direct = srcs_results,
         transitive = transitive_results,
     )
-    return [ClangTidyAspect(results = rule_results)]
+    return [ClangTidyAspect(results = rule_results),
+            OutputGroupInfo(ctidy = srcs_results)]
 
 clang_tidy_aspect = aspect(
     attr_aspects = ["deps"],
