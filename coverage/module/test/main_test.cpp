@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "main.h"
+#include "lib.h"
 
 TEST(Foo, Bar)
 {
