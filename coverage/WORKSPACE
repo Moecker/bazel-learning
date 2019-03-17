@@ -7,3 +7,14 @@ git_repository(
     remote = "https://github.com/google/googletest.git",
     commit = "de5be0eb28b74ecd6335e3bd61d9dc8914ce0e57",
 )
+
+git_repository(
+    name = "hchauvin_bazel_coverage_report",
+    remote = "https://github.com/hchauvin/bazel-coverage-report.git",
+    commit = "master",
+)
+
+load("@hchauvin_bazel_coverage_report//report:defs.bzl", "bazel_coverage_report_repositories")
+load("//:lcov.bzl", "bazel_coverage_report_repositories")
+
+bazel_coverage_report_repositories()
