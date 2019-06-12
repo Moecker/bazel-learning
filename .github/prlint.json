@@ -1,7 +1,7 @@
 {
   "body": [
     {
-      "pattern": "ITEM:\\d{1,8}",
+      "pattern": "ITEM:*\\d{1,8}",
       "flags": ["i"],
       "message": "You need a ITEM: tag in your description"
     },
